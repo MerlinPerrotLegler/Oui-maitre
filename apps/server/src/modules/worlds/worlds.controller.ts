@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { WorldsService } from './worlds.service';
 
 @Controller('worlds')
@@ -16,5 +16,7 @@ export class WorldsController {
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() body: any) { return this.worlds.update(id, body); }
-}
 
+  @Delete(':id')
+  async remove(@Param('id') id: string) { return this.worlds.remove(id); }
+}
