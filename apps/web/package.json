@@ -1,0 +1,10 @@
+{
+  "name": "@oui-maitre/web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "echo \"Web app placeholder — Next.js setup planned in iteration 08\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit || true"
+  }
+}
