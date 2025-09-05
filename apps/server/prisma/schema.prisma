@@ -1,4 +1,4 @@
-// Prisma schema (initial scaffold). Detailed models will be added in tasks 0004/0005.
+// Prisma schema — base models for iteration 0004.
 
 generator client {
   provider = "prisma-client-js"
@@ -9,8 +9,115 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Models to be defined in next tasks:
-// users, worlds, invitations, places, groups, group_members (0004)
-// sheets, characters, items, sheet_outfits (0005)
-// history_entries, chats, chat_participants, chat_messages (later)
+// Enums
+enum LockState {
+  none
+  global
+  partial
+}
 
+enum InvitationStatus {
+  active
+  used
+  revoked
+  expired
+}
+
+// Users
+model User {
+  id               String   @id @default(uuid())
+  email            String   @unique
+  passwordHash     String?  @map("password_hash")
+  oauthProvider    String?  @map("oauth_provider")
+  oauthSub         String?  @map("oauth_sub")
+  displayName      String?  @map("display_name")
+  avatarUrl        String?  @map("avatar_url")
+  storageUsedBytes BigInt   @default(0) @map("storage_used_bytes")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  worlds           World[]  @relation("WorldOwner")
+}
+
+// Worlds
+model World {
+  id           String     @id @default(uuid())
+  name         String
+  ownerUserId  String     @map("owner_user_id")
+  owner        User       @relation("WorldOwner", fields: [ownerUserId], references: [id])
+  currentDate  DateTime?  @map("current_date")
+  lockState    LockState  @default(none) @map("lock_state")
+  lockedScope  Json?      @map("locked_scope")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+  version      Int        @default(1)
+
+  places       Place[]
+  groups       Group[]
+  invitations  Invitation[]
+
+  @@index([ownerUserId])
+}
+
+// Invitations
+model Invitation {
+  id         String            @id @default(uuid())
+  worldId    String            @map("world_id")
+  world      World             @relation(fields: [worldId], references: [id])
+  token      String            @unique
+  status     InvitationStatus  @default(active)
+  expiresAt  DateTime?         @map("expires_at")
+  createdBy  String?           @map("created_by") // User ID
+  createdAt  DateTime          @default(now()) @map("created_at")
+  usedAt     DateTime?         @map("used_at")
+  revokedAt  DateTime?         @map("revoked_at")
+
+  @@index([worldId])
+}
+
+// Places
+model Place {
+  id             String    @id @default(uuid())
+  worldId        String    @map("world_id")
+  world          World     @relation(fields: [worldId], references: [id])
+  name           String
+  attributes     Json?     // texte, html_sanitized, images, etc.
+  avatarUrl      String?   @map("avatar_url")
+  parentPlaceId  String?   @map("parent_place_id")
+  parent         Place?    @relation("PlaceToSubplaces", fields: [parentPlaceId], references: [id])
+  subplaces      Place[]   @relation("PlaceToSubplaces")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  version        Int       @default(1)
+
+  @@index([worldId])
+  @@index([parentPlaceId])
+}
+
+// Groups
+model Group {
+  id        String   @id @default(uuid())
+  worldId   String   @map("world_id")
+  world     World    @relation(fields: [worldId], references: [id])
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  members   GroupMember[]
+
+  @@index([worldId])
+}
+
+// Group members (characterId is a String placeholder until Characters model exists)
+model GroupMember {
+  groupId      String   @map("group_id")
+  characterId  String   @map("character_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  group        Group    @relation(fields: [groupId], references: [id])
+
+  @@id([groupId, characterId])
+  @@index([characterId])
+}
+
+// Next iteration (0005) will add: Sheet, Character, Item, SheetOutfit models.
