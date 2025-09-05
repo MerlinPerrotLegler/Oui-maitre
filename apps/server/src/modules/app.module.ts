@@ -8,8 +8,9 @@ import { CharactersModule } from './characters/characters.module';
 import { ItemsModule } from './items/items.module';
 import { PlacesModule } from './places/places.module';
 import { GroupsModule } from './groups/groups.module';
+import { InvitationsModule } from './invitations/invitations.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, WorldsModule, PlacesModule, GroupsModule, SheetsModule, CharactersModule, ItemsModule],
+  imports: [PrismaModule, AuthModule, WorldsModule, PlacesModule, GroupsModule, InvitationsModule, SheetsModule, CharactersModule, ItemsModule],
 })
 export class AppModule {}
