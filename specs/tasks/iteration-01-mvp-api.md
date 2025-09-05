@@ -8,7 +8,7 @@
  - [x] 0006: Auth email/mot de passe (JWT access+refresh), Argon2id
  - [x] 0007: OAuth OIDC Google via Auth.js/Nest adapter
  - [x] 0008: Endpoints CRUD de base: worlds, places, groups, group_members
- - [ ] 0009: Endpoints sheets (création, lecture, duplication `is_template`), characters (CRUD minimal)
+ - [x] 0009: Endpoints sheets (création, lecture, duplication `is_template`), characters (CRUD minimal)
  - [ ] 0010: Endpoints items (CRUD minimal, types acceptés, sans logique spécifique)
  - [ ] 0011: Invitations: créer, lister, accepter via token
  - [ ] 0012: OpenAPI 3.1 (génération) + route `/docs`

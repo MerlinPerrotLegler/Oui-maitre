@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { CharactersService } from './characters.service';
 
 @Controller('characters')
@@ -6,7 +6,7 @@ export class CharactersController {
   constructor(private readonly characters: CharactersService) {}
 
   @Get()
-  async list() { return this.characters.list(); }
+  async list(@Query('world_id') worldId?: string) { return this.characters.list({ world_id: worldId }); }
 
   @Get(':id')
   async get(@Param('id') id: string) { return this.characters.get(id); }
@@ -17,4 +17,3 @@ export class CharactersController {
   @Patch(':id')
   async update(@Param('id') id: string, @Body() body: any) { return this.characters.update(id, body); }
 }
-

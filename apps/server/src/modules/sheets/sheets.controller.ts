@@ -7,8 +7,8 @@ export class SheetsController {
 
   @Get()
   async list(@Query('is_template') isTemplate?: string) {
-    if (isTemplate === 'true') return this.sheets.listTemplates();
-    return [];
+    const filter = isTemplate === undefined ? {} : { is_template: isTemplate === 'true' };
+    return this.sheets.list(filter as any);
   }
 
   @Get(':id')
@@ -23,4 +23,3 @@ export class SheetsController {
   @Post(':id/duplicate')
   async duplicate(@Param('id') id: string) { return this.sheets.duplicate(id); }
 }
-
