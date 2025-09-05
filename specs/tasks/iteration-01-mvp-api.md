@@ -1,7 +1,7 @@
 # Itération 01 — MVP API de base
 
 - [x] 0001: Initialiser repo monorepo (server+web), config TypeScript, ESLint/Prettier
-- [ ] 0002: Scaffold NestJS (Fastify), modules: auth, worlds, sheets, characters, items
+- [x] 0002: Scaffold NestJS (Fastify), modules: auth, worlds, sheets, characters, items
 - [ ] 0003: Intégrer Prisma (PostgreSQL), config .env et migrations initiales
 - [ ] 0004: Implé schéma DB minimal (users, worlds, invitations, places, groups, group_members)
 - [ ] 0005: Implé schéma DB (sheets, characters, items) selon `specs/tech/data-model.md`
