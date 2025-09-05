@@ -6,8 +6,8 @@ export class ItemsController {
   constructor(private readonly items: ItemsService) {}
 
   @Get()
-  async list(@Query('holder') holder?: string) {
-    return this.items.list();
+  async list(@Query('world_id') worldId?: string) {
+    return this.items.list({ world_id: worldId });
   }
 
   @Get(':id')
@@ -22,4 +22,3 @@ export class ItemsController {
   @Post(':id/open')
   async open(@Param('id') id: string) { return { id, is_open: true }; }
 }
-
