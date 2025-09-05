@@ -23,6 +23,31 @@ enum InvitationStatus {
   expired
 }
 
+enum CharacterType {
+  PC
+  NPC
+}
+
+enum ItemType {
+  generic
+  weapon
+  armor
+  container
+}
+
+enum HolderType {
+  world
+  place
+  item
+  character_hand
+  character_outfit
+}
+
+enum Hand {
+  left
+  right
+}
+
 // Users
 model User {
   id               String   @id @default(uuid())
@@ -120,4 +145,95 @@ model GroupMember {
   @@index([characterId])
 }
 
-// Next iteration (0005) will add: Sheet, Character, Item, SheetOutfit models.
+// Sheets (inclut fiches modèle)
+model Sheet {
+  id               String   @id @default(uuid())
+  worldId          String   @map("world_id")
+  world            World    @relation(fields: [worldId], references: [id])
+  isTemplate       Boolean  @map("is_template")
+  templateSourceId String?  @map("template_source_id")
+  templateSource   Sheet?   @relation("TemplateSource", fields: [templateSourceId], references: [id])
+  name             String
+  attributes       Json?
+  capacities       Json?    // array JSON: [{ name, details, voix }]
+  purseGold        Int      @default(0) @map("purse_gold")
+  purseSilver      Int      @default(0) @map("purse_silver")
+  purseCopper      Int      @default(0) @map("purse_copper")
+  vision           Int      @default(0)
+  avatarUrl        String?  @map("avatar_url")
+  inventoryItemId  String?  @map("inventory_container_item_id")
+  inventoryItem    Item?    @relation("SheetInventoryItem", fields: [inventoryItemId], references: [id])
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  version          Int      @default(1)
+
+  characters       Character[]
+
+  @@index([worldId])
+  @@index([templateSourceId])
+}
+
+// Characters
+model Character {
+  id               String         @id @default(uuid())
+  worldId          String         @map("world_id")
+  world            World          @relation(fields: [worldId], references: [id])
+  sheetId          String         @map("sheet_id")
+  sheet            Sheet          @relation(fields: [sheetId], references: [id])
+  userId           String?        @map("user_id")
+  type             CharacterType  @default(PC)
+  currentPlaceId   String         @map("current_place_id")
+  currentPlace     Place          @relation(fields: [currentPlaceId], references: [id])
+  rightHandItemId  String?        @map("right_hand_item_id")
+  leftHandItemId   String?        @map("left_hand_item_id")
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+  version          Int            @default(1)
+
+  groups           GroupMember[]
+
+  @@index([worldId])
+  @@index([currentPlaceId])
+}
+
+// Items
+model Item {
+  id           String     @id @default(uuid())
+  worldId      String     @map("world_id")
+  world        World      @relation(fields: [worldId], references: [id])
+  name         String
+  description  String?
+  type         ItemType   @default(generic)
+  metadata     Json?
+  capacities   Json?      // array JSON
+  visibility   Int        @default(0)
+  avatarUrl    String?    @map("avatar_url")
+  holderType   HolderType @map("holder_type")
+  holderId     String?    @map("holder_id")
+  hand         Hand?      @map("hand")
+  isOpen       Boolean    @default(false) @map("is_open")
+  isLockable   Boolean    @default(false) @map("is_lockable")
+  isLocked     Boolean    @default(false) @map("is_locked")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+  version      Int        @default(1)
+
+  // Inventory containment (for containers): items can point to holderType=item & holderId=this id
+
+  @@index([worldId])
+  @@index([worldId, holderType, holderId])
+  @@index([worldId, visibility])
+}
+
+// Outfits (worn items)
+model SheetOutfit {
+  characterId String  @map("character_id")
+  itemId      String  @map("item_id")
+  slot        String  @default("outfit")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  character   Character @relation(fields: [characterId], references: [id])
+  item        Item      @relation(fields: [itemId], references: [id])
+
+  @@id([characterId, itemId])
+}
