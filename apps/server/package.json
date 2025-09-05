@@ -7,6 +7,9 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prisma:generate": "prisma generate --schema ./prisma/schema.prisma",
+    "prisma:migrate": "prisma migrate dev --name init --schema ./prisma/schema.prisma",
+    "prisma:studio": "prisma studio --schema ./prisma/schema.prisma"
   }
 }

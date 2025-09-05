@@ -1,0 +1,16 @@
+// Prisma schema (initial scaffold). Detailed models will be added in tasks 0004/0005.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Models to be defined in next tasks:
+// users, worlds, invitations, places, groups, group_members (0004)
+// sheets, characters, items, sheet_outfits (0005)
+// history_entries, chats, chat_participants, chat_messages (later)
+
