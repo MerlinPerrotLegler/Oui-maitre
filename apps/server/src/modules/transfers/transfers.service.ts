@@ -2,12 +2,13 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 
 type EndpointRef = { type: 'world'|'place'|'item'|'character_hand'|'character_outfit'; id: string; hand?: 'left'|'right' };
+type Actor = { role?: string; characterId?: string };
 
 @Injectable()
 export class TransfersService {
   constructor(private prisma: PrismaService) {}
 
-  async transfer(input: { item_id: string; from: EndpointRef; to: EndpointRef }) {
+  async transfer(input: { item_id: string; from: EndpointRef; to: EndpointRef; actor?: Actor }) {
     const item = await this.prisma.item.findUnique({ where: { id: input.item_id } });
     if (!item) throw new BadRequestException('item_not_found');
 
@@ -17,6 +18,18 @@ export class TransfersService {
       item.holderId === input.from.id &&
       (input.from.type !== 'character_hand' || (item.hand as any) === input.from.hand);
     if (!matchesSource) throw new BadRequestException('invalid_source');
+
+    // Minimal permissions: if not MJ, only allow affecting own character hands/outfits
+    const actor = input.actor;
+    const isMJ = (actor?.role || '').toLowerCase() === 'mj';
+    if (!isMJ) {
+      const touchingCharIds = [input.from, input.to]
+        .filter(ep => ep.type === 'character_hand' || ep.type === 'character_outfit')
+        .map(ep => ep.id);
+      if (touchingCharIds.length > 0 && (!actor?.characterId || !touchingCharIds.every(id => id === actor!.characterId))) {
+        throw new BadRequestException('forbidden');
+      }
+    }
 
     // Validate destination
     let update: any = { visibility: 10 };
@@ -46,4 +59,3 @@ export class TransfersService {
     return { ok: true, item: updated, from: input.from, to: input.to };
   }
 }
-
