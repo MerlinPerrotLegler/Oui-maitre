@@ -4,4 +4,4 @@
 - [x] 0047: Générateurs `ai_schema`, `ai_summary`, `ai_tips` pour sheets/characters/items/places (items+sheets)
 - [x] 0048: Worker BullMQ pour recalcul `ai_metadata` sur mutations (squelette; désactivé si REDIS_URL absent)
 - [x] 0049: Documentation: exemples IA et liens d’actions (HATEOAS)
-- [ ] 0050: Tests unitaires sur projection IA
+- [x] 0050: Tests unitaires sur projection IA
