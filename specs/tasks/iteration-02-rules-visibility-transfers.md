@@ -2,7 +2,7 @@
 
 - [x] 0015: Étendre `items` pour types `weapon|armor|container` + validations metadata
 - [x] 0016: Ajouter champs `visibility` (0..10) et règles côté sérialisation
-- [ ] 0017: Interdiction lecture inventaires d’autrui (masquer contenu conteneurs)
+- [x] 0017: Interdiction lecture inventaires d’autrui (masquer contenu conteneurs)
 - [ ] 0018: Endpoint `POST /items/{id}/open` (containers): verrouillage/ouverture, erreurs standard
 - [ ] 0019: Endpoint atomique `POST /transfers` (main↔inventaire↔coffre↔lieu↔don)
 - [ ] 0020: Règle don (FR‑INV‑2): vérifier main libre receveur, sinon `no_free_hand`

@@ -67,6 +67,13 @@ export class ItemsService {
     });
   }
 
+  async listContents(containerId: string) {
+    return this.prisma.item.findMany({
+      where: { holderType: 'item' as any, holderId: containerId },
+      orderBy: { createdAt: 'asc' },
+    });
+  }
+
   private validateByType(type: 'generic'|'weapon'|'armor'|'container', metadata: any) {
     if (type === 'weapon') {
       if (!metadata || typeof metadata.degats_base !== 'number' || typeof metadata.degats_des !== 'string') {

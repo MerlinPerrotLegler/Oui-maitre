@@ -12,7 +12,15 @@ export class ItemsController {
   }
 
   @Get(':id')
-  async get(@Param('id') id: string) { return this.items.get(id); }
+  async get(@Param('id') id: string, @Query('include') include?: string) {
+    const item = await this.items.get(id);
+    if (!item) return null;
+    if (include === 'contents' && item.type === 'container' && item.isOpen) {
+      const contents = await this.items.listContents(id);
+      return { ...item, contents };
+    }
+    return item;
+  }
 
   @Post()
   async create(@Body() body: any) { return this.items.create(body); }
