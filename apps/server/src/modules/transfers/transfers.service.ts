@@ -1,14 +1,15 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { randomBytes } from 'node:crypto';
 import { PrismaService } from '../../prisma/prisma.service';
-import { EventsService, EventEnvelope } from '../events/events.service';
+import { EventEnvelope } from '../events/events.service';
+import { OutboxService } from '../events/outbox.service';
 
 type EndpointRef = { type: 'world'|'place'|'item'|'character_hand'|'character_outfit'; id: string; hand?: 'left'|'right' };
 type Actor = { role?: string; characterId?: string };
 
 @Injectable()
 export class TransfersService {
-  constructor(private prisma: PrismaService, private events: EventsService) {}
+  constructor(private prisma: PrismaService, private outbox: OutboxService) {}
 
   async transfer(input: { item_id: string; from: EndpointRef; to: EndpointRef; actor?: Actor }) {
     const item = await this.prisma.item.findUnique({ where: { id: input.item_id } });
@@ -65,7 +66,7 @@ export class TransfersService {
       at: new Date().toISOString(),
       data: { item_id: updated.id, from: input.from, to: input.to, visibility_after: updated.visibility },
     };
-    this.events.emit(evt);
+    await this.outbox.enqueue(evt);
     return { ok: true, item: updated, from: input.from, to: input.to };
   }
 }

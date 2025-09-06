@@ -237,3 +237,16 @@ model SheetOutfit {
 
   @@id([characterId, itemId])
 }
+
+// Outbox for reliable event delivery (processing to be implemented later)
+model OutboxEvent {
+  id         String   @id @default(uuid())
+  worldId    String   @map("world_id")
+  type       String
+  requestId  String?  @map("request_id")
+  payload    Json
+  createdAt  DateTime @default(now()) @map("created_at")
+  processedAt DateTime? @map("processed_at")
+
+  @@index([worldId, createdAt])
+}
