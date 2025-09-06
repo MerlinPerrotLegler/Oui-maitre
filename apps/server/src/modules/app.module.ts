@@ -11,8 +11,9 @@ import { GroupsModule } from './groups/groups.module';
 import { InvitationsModule } from './invitations/invitations.module';
 import { TransfersModule } from './transfers/transfers.module';
 import { EventsModule } from './events/events.module';
+import { ChatsModule } from './chats/chats.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, WorldsModule, PlacesModule, GroupsModule, InvitationsModule, EventsModule, TransfersModule, SheetsModule, CharactersModule, ItemsModule],
+  imports: [PrismaModule, AuthModule, WorldsModule, PlacesModule, GroupsModule, InvitationsModule, EventsModule, TransfersModule, ChatsModule, SheetsModule, CharactersModule, ItemsModule],
 })
 export class AppModule {}
