@@ -14,8 +14,9 @@ import { EventsModule } from './events/events.module';
 import { ChatsModule } from './chats/chats.module';
 import { HistoryModule } from './history/history.module';
 import { SoundsModule } from './sounds/sounds.module';
+import { AiModule } from './ai/ai.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, WorldsModule, PlacesModule, GroupsModule, InvitationsModule, EventsModule, TransfersModule, ChatsModule, HistoryModule, SoundsModule, SheetsModule, CharactersModule, ItemsModule],
+  imports: [PrismaModule, AuthModule, WorldsModule, PlacesModule, GroupsModule, InvitationsModule, EventsModule, TransfersModule, ChatsModule, HistoryModule, SoundsModule, AiModule, SheetsModule, CharactersModule, ItemsModule],
 })
 export class AppModule {}
