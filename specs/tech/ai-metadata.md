@@ -48,8 +48,31 @@ Item (container fermé)
   }
 }
 
+Item (arme)
+{
+  "id": "it_20",
+  "type": "weapon",
+  "metadata": { "degats_base": 3, "degats_des": "1d8" },
+  "ai_summary": "Hache de guerre (arme)",
+  "ai_tips": {
+    "actions": []
+  }
+}
+
+Sheet (avec `?ai=1`)
+{
+  "id": "s_1",
+  "name": "Eldra",
+  "ai_schema": {
+    "type": "sheet",
+    "slots": { "hands": { "left": null, "right": null }, "outfit": [] },
+    "purse": { "gold": 5, "silver": 0, "copper": 0 },
+    "visibility_threshold": 3
+  },
+  "ai_tips": { "actions": [] }
+}
+
 ## Lignes directrices
 - Noms de clés concis et cohérents.
 - Inclure seulement les champs utiles à la décision.
 - Ajouter des liens d'action pertinents selon le contexte et les permissions.
-
