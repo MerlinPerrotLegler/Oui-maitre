@@ -60,6 +60,7 @@ export class ChatsService {
     if (chat) {
       await this.outbox.enqueue({ id: this.id(), type: 'chat.message.updated', world_id: chat.worldId, at: new Date().toISOString(), data: { chat_id: chatId, message } });
     }
+    await this.prisma.historyEntry.create({ data: { worldId: chat.worldId, entityType: 'chat', entityId: chatId, action: 'message.edit', before: { id: current.id, content: current.content }, after: { id: message.id, content: message.content } } });
     return message;
   }
 
@@ -77,6 +78,7 @@ export class ChatsService {
     if (chat) {
       await this.outbox.enqueue({ id: this.id(), type: 'chat.message.deleted', world_id: chat.worldId, at: new Date().toISOString(), data: { chat_id: chatId, message } });
     }
+    await this.prisma.historyEntry.create({ data: { worldId: chat?.worldId || '', entityType: 'chat', entityId: chatId, action: 'message.delete', before: { id: current.id, content: current.content }, after: { id: message.id, deleted: true } } });
     return message;
   }
 
