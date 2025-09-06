@@ -8,6 +8,7 @@ import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from '@fastify/helmet';
+import * as Sentry from '@sentry/node';
 
 import { AppModule } from './modules/app.module';
 
@@ -17,6 +18,9 @@ async function bootstrap() {
     genReqId: (req: any) => req.headers['x-request-id'] || Math.random().toString(16).slice(2),
   } as any);
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, adapter);
+  if (process.env.SENTRY_DSN) {
+    Sentry.init({ dsn: process.env.SENTRY_DSN, tracesSampleRate: 0.1 });
+  }
   const fastify = app.getHttpAdapter().getInstance();
   fastify.addHook('onRequest', (req: any, reply: any, done: any) => {
     const id = req.id;

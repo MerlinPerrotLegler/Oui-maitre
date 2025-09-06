@@ -27,7 +27,8 @@
   "optionalDependencies": {
     "@opentelemetry/sdk-node": "^0.52.1",
     "@opentelemetry/auto-instrumentations-node": "^0.50.1",
-    "@opentelemetry/exporter-trace-otlp-http": "^0.52.1"
+    "@opentelemetry/exporter-trace-otlp-http": "^0.52.1",
+    "@sentry/node": "^8.25.0"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
