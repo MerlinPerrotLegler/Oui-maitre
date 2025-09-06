@@ -29,5 +29,13 @@ export class ItemsController {
   async update(@Param('id') id: string, @Body() body: any) { return this.items.update(id, body); }
 
   @Post(':id/open')
-  async open(@Param('id') id: string) { return { id, is_open: true }; }
+  async open(@Param('id') id: string) {
+    const item = await this.items.get(id);
+    if (!item) return { error: 'not_found', message: 'Item not found' };
+    if (item.type !== 'container') return { error: 'not_container', message: 'Item is not a container' };
+    if (item.isLockable && item.isLocked) return { error: 'container_locked', message: 'Container is locked' };
+    if (item.isOpen) return { id: item.id, is_open: true };
+    const updated = await this.items.update(id, { is_open: true });
+    return { id: updated.id, is_open: true };
+  }
 }

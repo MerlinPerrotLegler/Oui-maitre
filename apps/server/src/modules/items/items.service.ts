@@ -63,6 +63,9 @@ export class ItemsService {
         capacities: input.capacities,
         visibility: input.visibility,
         avatarUrl: input.avatar_url,
+        isOpen: input.is_open,
+        isLocked: input.is_locked,
+        isLockable: input.is_lockable,
       },
     });
   }
