@@ -9,4 +9,4 @@
 - [x] 0021: Interaction → `visibility=10` (après transfert/prise)
 - [x] 0022: Permissions: MJ override, PJ limité à ses items et contexte de lieu
 - [x] 0023: Tests unitaires services (transfers, containers, visibility)
-- [ ] 0024: Index DB pour holders et visibilité
+- [x] 0024: Index DB pour holders et visibilité
