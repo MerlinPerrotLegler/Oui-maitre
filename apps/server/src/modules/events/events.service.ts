@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Subject } from 'rxjs';
 import { EventsGateway } from './events.gateway';
+import { MetricsService } from '../metrics/metrics.service';
 
 export type EventEnvelope<T = any> = {
   id: string;
@@ -17,7 +18,7 @@ export class EventsService {
   private worldBuffers = new Map<string, { queue: EventEnvelope[]; timer?: NodeJS.Timeout }>();
   private throttleMs = Number(process.env.WS_THROTTLE_MS ?? 50);
 
-  constructor(private gateway: EventsGateway) {}
+  constructor(private gateway: EventsGateway, private metrics: MetricsService) {}
 
   stream() { return this.sse$.asObservable(); }
 
@@ -34,7 +35,10 @@ export class EventsService {
     if (!buf.timer) {
       buf.timer = setTimeout(() => {
         const toSend = buf.queue.splice(0, buf.queue.length);
-        for (const e of toSend) this.gateway.broadcastToWorld(e.world_id, e);
+        for (const e of toSend) {
+          this.gateway.broadcastToWorld(e.world_id, e);
+          this.metrics.wsEvents.inc();
+        }
         buf.timer = undefined;
       }, this.throttleMs);
     }

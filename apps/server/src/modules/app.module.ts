@@ -15,8 +15,9 @@ import { ChatsModule } from './chats/chats.module';
 import { HistoryModule } from './history/history.module';
 import { SoundsModule } from './sounds/sounds.module';
 import { AiModule } from './ai/ai.module';
+import { MetricsModule } from './metrics/metrics.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, WorldsModule, PlacesModule, GroupsModule, InvitationsModule, EventsModule, TransfersModule, ChatsModule, HistoryModule, SoundsModule, AiModule, SheetsModule, CharactersModule, ItemsModule],
+  imports: [PrismaModule, AuthModule, WorldsModule, PlacesModule, GroupsModule, InvitationsModule, MetricsModule, EventsModule, TransfersModule, ChatsModule, HistoryModule, SoundsModule, AiModule, SheetsModule, CharactersModule, ItemsModule],
 })
 export class AppModule {}
