@@ -7,7 +7,18 @@ export default function PlayerView() {
   useEffect(() => {
     const socket = io("http://localhost:3000");
     socket.emit('subscribe', { world_id: 'demo' });
-    socket.on('event', (e) => setEvents((prev) => [JSON.stringify(e), ...prev].slice(0, 10)));
+    socket.on('event', (e: any) => {
+      setEvents((prev) => [JSON.stringify(e), ...prev].slice(0, 10));
+      if (e?.type === 'sound.play') {
+        const url = e?.data?.url;
+        const volume = e?.data?.volume ?? 1;
+        if (url) {
+          const audio = new Audio(url);
+          audio.volume = Math.max(0, Math.min(1, volume));
+          audio.play().catch(() => {});
+        }
+      }
+    });
     return () => { socket.close(); };
   }, []);
   return (
@@ -18,4 +29,3 @@ export default function PlayerView() {
     </main>
   );
 }
-
