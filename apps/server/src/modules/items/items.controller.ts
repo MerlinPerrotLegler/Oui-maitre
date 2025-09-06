@@ -6,20 +6,38 @@ export class ItemsController {
   constructor(private readonly items: ItemsService) {}
 
   @Get()
-  async list(@Query('world_id') worldId?: string, @Query('vision') vision?: string) {
+  async list(
+    @Query('world_id') worldId?: string,
+    @Query('vision') vision?: string,
+    @Query('ai') ai?: string,
+  ) {
     const v = vision !== undefined ? Number(vision) : undefined;
-    return this.items.list({ world_id: worldId, vision: typeof v === 'number' && !isNaN(v) ? v : undefined });
+    const list = await this.items.list({ world_id: worldId, vision: typeof v === 'number' && !isNaN(v) ? v : undefined });
+    if (ai === '1') {
+      const { aiItemShape } = await import('../ai/ai.util');
+      return list.map((it: any) => ({ ...it, ...aiItemShape(it) }));
+    }
+    return list;
   }
 
   @Get(':id')
-  async get(@Param('id') id: string, @Query('include') include?: string) {
+  async get(@Param('id') id: string, @Query('include') include?: string, @Query('ai') ai?: string) {
     const item = await this.items.get(id);
     if (!item) return null;
     if (include === 'contents' && item.type === 'container' && item.isOpen) {
       const contents = await this.items.listContents(id);
-      return { ...item, contents };
+      const base = { ...item, contents } as any;
+      if (ai === '1') {
+        const { aiItemShape } = await import('../ai/ai.util');
+        return { ...base, ...aiItemShape(item) };
+      }
+      return base;
     }
-    return item;
+    if (ai === '1') {
+      const { aiItemShape } = await import('../ai/ai.util');
+      return { ...item, ...aiItemShape(item) };
+    }
+    return item as any;
   }
 
   @Post()
