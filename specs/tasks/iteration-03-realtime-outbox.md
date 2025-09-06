@@ -7,4 +7,4 @@
 - [x] 0029: Pattern Outbox (table + worker BullMQ) pour diffusion fiable (table + inline dispatch)
 - [x] 0030: Déduplication client via `id`/`request_id`; exemples côté SDK
 - [x] 0031: Throttling/Backpressure WS (config Socket.IO)
-- [ ] 0032: Tests intégration WS (connexion, join rooms, réception events)
+- [x] 0032: Tests intégration WS (connexion, join rooms, réception events)
