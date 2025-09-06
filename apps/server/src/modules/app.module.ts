@@ -12,8 +12,9 @@ import { InvitationsModule } from './invitations/invitations.module';
 import { TransfersModule } from './transfers/transfers.module';
 import { EventsModule } from './events/events.module';
 import { ChatsModule } from './chats/chats.module';
+import { HistoryModule } from './history/history.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, WorldsModule, PlacesModule, GroupsModule, InvitationsModule, EventsModule, TransfersModule, ChatsModule, SheetsModule, CharactersModule, ItemsModule],
+  imports: [PrismaModule, AuthModule, WorldsModule, PlacesModule, GroupsModule, InvitationsModule, EventsModule, TransfersModule, ChatsModule, HistoryModule, SheetsModule, CharactersModule, ItemsModule],
 })
 export class AppModule {}

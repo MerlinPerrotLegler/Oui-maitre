@@ -296,3 +296,22 @@ model ChatMessage {
 
   @@index([chatId, createdAt])
 }
+
+// History entries (audit)
+model HistoryEntry {
+  id         String   @id @default(uuid())
+  worldId    String   @map("world_id")
+  entityType String   @map("entity_type")
+  entityId   String   @map("entity_id")
+  action     String
+  actorUserId String? @map("actor_user_id")
+  source     String?  // ui|api|system
+  at         DateTime @default(now())
+  requestId  String?  @map("request_id")
+  before     Json?
+  after      Json?
+  metadata   Json?
+
+  @@index([worldId, at])
+  @@index([entityType, entityId, at])
+}

@@ -59,6 +59,16 @@ export class TransfersService {
     }
 
     const updated = await this.prisma.item.update({ where: { id: item.id }, data: update });
+    await this.prisma.historyEntry.create({
+      data: {
+        worldId: updated.worldId,
+        entityType: 'item',
+        entityId: updated.id,
+        action: 'transfer',
+        before: { holderType: item.holderType, holderId: item.holderId, hand: item.hand },
+        after: { holderType: updated.holderType, holderId: updated.holderId, hand: updated.hand },
+      },
+    });
     const evt: EventEnvelope = {
       id: cryptoRandomId(),
       type: 'item.transferred',
