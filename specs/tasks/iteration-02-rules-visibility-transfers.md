@@ -1,7 +1,7 @@
 # Itération 02 — Règles objets, visibilité et transferts
 
 - [x] 0015: Étendre `items` pour types `weapon|armor|container` + validations metadata
-- [ ] 0016: Ajouter champs `visibility` (0..10) et règles côté sérialisation
+- [x] 0016: Ajouter champs `visibility` (0..10) et règles côté sérialisation
 - [ ] 0017: Interdiction lecture inventaires d’autrui (masquer contenu conteneurs)
 - [ ] 0018: Endpoint `POST /items/{id}/open` (containers): verrouillage/ouverture, erreurs standard
 - [ ] 0019: Endpoint atomique `POST /transfers` (main↔inventaire↔coffre↔lieu↔don)

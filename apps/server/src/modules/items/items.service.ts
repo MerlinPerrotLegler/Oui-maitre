@@ -5,10 +5,11 @@ import { PrismaService } from '../../prisma/prisma.service';
 export class ItemsService {
   constructor(private prisma: PrismaService) {}
 
-  async list(filter?: { world_id?: string }) {
+  async list(filter?: { world_id?: string; vision?: number }) {
     return this.prisma.item.findMany({
       where: {
         ...(filter?.world_id ? { worldId: filter.world_id } : {}),
+        ...(typeof filter?.vision === 'number' ? { visibility: { gt: filter!.vision } } : {}),
       },
       orderBy: { createdAt: 'desc' },
     });

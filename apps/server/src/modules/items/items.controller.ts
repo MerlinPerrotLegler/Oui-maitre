@@ -6,8 +6,9 @@ export class ItemsController {
   constructor(private readonly items: ItemsService) {}
 
   @Get()
-  async list(@Query('world_id') worldId?: string) {
-    return this.items.list({ world_id: worldId });
+  async list(@Query('world_id') worldId?: string, @Query('vision') vision?: string) {
+    const v = vision !== undefined ? Number(vision) : undefined;
+    return this.items.list({ world_id: worldId, vision: typeof v === 'number' && !isNaN(v) ? v : undefined });
   }
 
   @Get(':id')
