@@ -24,6 +24,11 @@
     "prom-client": "^14.2.0",
     "@fastify/helmet": "^12.1.0"
   },
+  "optionalDependencies": {
+    "@opentelemetry/sdk-node": "^0.52.1",
+    "@opentelemetry/auto-instrumentations-node": "^0.50.1",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.52.1"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",

@@ -1,6 +1,6 @@
 # Itération 09 — Observabilité & Performance
 
-- [ ] 0064: OpenTelemetry (Nest + Prisma) + export OTLP (Tempo/Jaeger)
+- [x] 0064: OpenTelemetry (Nest + Prisma) + export OTLP (Tempo/Jaeger) (opt-in via OTEL_ENABLED)
 - [ ] 0065: Logs structurés (pino) + corrélation `request_id`
 - [x] 0066: Metrics Prometheus: WS (connexions, latence), jobs, API
 - [ ] 0067: Sentry (backend+frontend) pour erreurs

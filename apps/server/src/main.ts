@@ -3,6 +3,7 @@
   Dependencies will be added in subsequent tasks; this is structural scaffolding.
 */
 import 'reflect-metadata';
+import './otel-init';
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
