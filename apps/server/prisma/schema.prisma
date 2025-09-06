@@ -315,3 +315,13 @@ model HistoryEntry {
   @@index([worldId, at])
   @@index([entityType, entityId, at])
 }
+
+// World state snapshots for rollback support
+model WorldSnapshot {
+  id        String   @id @default(uuid())
+  worldId   String   @map("world_id")
+  at        DateTime @default(now())
+  snapshot  Json
+
+  @@index([worldId, at])
+}

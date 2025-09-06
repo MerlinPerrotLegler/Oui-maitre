@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { HistoryService } from './history.service';
 import { HistoryController } from './history.controller';
+import { SnapshotService } from './snapshot.service';
 
 @Module({
-  providers: [HistoryService],
+  providers: [HistoryService, SnapshotService],
   controllers: [HistoryController],
-  exports: [HistoryService],
+  exports: [HistoryService, SnapshotService],
 })
 export class HistoryModule {}
-

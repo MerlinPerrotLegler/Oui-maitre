@@ -1,10 +1,11 @@
 import { Controller, Get, Param, Query, Post, Body } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { OutboxService } from '../events/outbox.service';
+import { SnapshotService } from './snapshot.service';
 
 @Controller('worlds/:worldId/history')
 export class HistoryController {
-  constructor(private prisma: PrismaService, private outbox: OutboxService) {}
+  constructor(private prisma: PrismaService, private outbox: OutboxService, private snapshots: SnapshotService) {}
 
   @Get()
   list(@Param('worldId') worldId: string, @Query('entity_type') et?: string, @Query('entity_id') eid?: string) {
@@ -24,6 +25,11 @@ export class HistoryController {
     return { ok: true };
   }
 
+  @Post('/snapshot')
+  async snapshot(@Param('worldId') worldId: string) {
+    const snap = await this.snapshots.create(worldId);
+    return { ok: true, snapshot_id: snap.id };
+  }
+
   private id() { return (Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2)).slice(0, 24); }
 }
-
