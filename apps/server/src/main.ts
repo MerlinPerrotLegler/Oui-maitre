@@ -12,10 +12,17 @@ import helmet from '@fastify/helmet';
 import { AppModule } from './modules/app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
-    new FastifyAdapter({ logger: true }),
-  );
+  const adapter = new FastifyAdapter({
+    logger: { level: 'info' },
+    genReqId: (req: any) => req.headers['x-request-id'] || Math.random().toString(16).slice(2),
+  } as any);
+  const app = await NestFactory.create<NestFastifyApplication>(AppModule, adapter);
+  const fastify = app.getHttpAdapter().getInstance();
+  fastify.addHook('onRequest', (req: any, reply: any, done: any) => {
+    const id = req.id;
+    reply.header('x-request-id', id);
+    done();
+  });
   await app.register(helmet, {
     contentSecurityPolicy: {
       directives: {
