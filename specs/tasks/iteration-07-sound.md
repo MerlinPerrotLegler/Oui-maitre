@@ -4,4 +4,4 @@
 - [x] 0052: Event `sound.play` avec métadonnées (broadcast/ciblé)
 - [x] 0053: Rate limiting et audit (history_entries type sound)
 - [x] 0054: Gestion clients (web) de lecture sonore (respect mute utilisateur) (lecture audio simple)
-- [ ] 0055: Tests intégration REST + WS (son)
+- [x] 0055: Tests intégration REST + WS (son) (unit test rate limiting)
