@@ -4,7 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "echo \"Web app placeholder — Next.js setup planned in iteration 08\"",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "typecheck": "tsc -p tsconfig.json --noEmit || true"
+  },
+  "dependencies": {
+    "next": "^14.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "socket.io-client": "^4.7.5"
   }
 }
